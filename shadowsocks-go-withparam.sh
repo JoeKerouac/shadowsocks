@@ -154,20 +154,29 @@ pre_install(){
         case "${1}" in
             -p|--password)
             shift;
-            echo -e "password is ${1}"
             shadowsockspwd=${1}
+            if [[ ! -n ${shadowsockspwd} ]]; then
+                echo shadowsockspwd="JoeKerouac"
+            fi
+            echo -e "password is ${shadowsockspwd}"
             shift;
             ;;
             -P|--port)
             shift;
-            echo -e "port is ${1}"
             shadowsocksport=${1}
+            if [[ ! -n ${shadowsocksport} ]]; then
+                echo shadowsocksport=10001
+            fi
+            echo -e "port is ${shadowsocksport}"
             shift;
             ;;
             -c|--cipher)
             shift;
-            echo -e "cipher is ${1}"
             shadowsockscipher=${1}
+            if [[ ! -n ${shadowsockscipher} ]]; then
+                echo shadowsockscipher="aes-256-cfb"
+            fi
+            echo -e "cipher is ${shadowsockscipher}"
             shift;
             ;;
             --)
@@ -334,7 +343,7 @@ action=$1
 
 shift;
 
-ARGS=`getopt -o "p:P:c:" -l "password:,port:,cipher:" -n "shadowsocks-go-withparam.sh" -- "$@"`
+ARGS=`getopt -o "p:P:c:" -l "password::,port::,cipher::" -n "shadowsocks-go-withparam.sh" -- "$@"`
 
 eval set -- "${ARGS}"
 
