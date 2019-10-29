@@ -148,8 +148,6 @@ get_char(){
 
 # Pre-installation settings
 pre_install(){
-    ARGS=`getopt -o "p:P:c:" -l "password:,port:,cipher:" -n "shadowsocks-go-withparam.sh" -- "$@"`
-
     eval set -- "${ARGS}"
 
     while true; do
@@ -158,16 +156,19 @@ pre_install(){
             shift;
             echo -e "password is ${1}"
             shadowsockspwd=${1}
+            shift;
             ;;
             -P|--port)
             shift;
             echo -e "port is ${1}"
             shadowsocksport=${1}
+            shift;
             ;;
             -c|--cipher)
             shift;
             echo -e "cipher is ${1}"
             shadowsockscipher=${1}
+            shift;
             ;;
             --)
             shift;
@@ -330,6 +331,13 @@ install_shadowsocks_go(){
 # Initialization step
 action=$1
 [ -z $1 ] && action=install
+
+shift;
+
+ARGS=`getopt -o "p:P:c:" -l "password:,port:,cipher:" -n "shadowsocks-go-withparam.sh" -- "$@"`
+
+eval set -- "${ARGS}"
+
 case "$action" in
     install|uninstall)
         ${action}_shadowsocks_go
